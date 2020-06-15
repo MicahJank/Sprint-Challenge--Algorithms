@@ -25,6 +25,7 @@ def count_th(word):
         # then we can use recursion to check the rest of the string by slicing the word string starting at pointer_a
         occurences += count_th(word[pointer_a:])
     else:
+        # pointer should only go up by 1 here in case since i am not sure what the next 2 strings in the list would be
         pointer_a += 1
         pointer_b += 1
         occurences += count_th(word[pointer_a:])
