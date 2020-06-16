@@ -92,19 +92,56 @@ class SortingRobot:
         """
         return self._light == "ON"
 
+    # time complexity is O(n^2) i think since i have a loop within a loop
     def sort(self):
         """
         Sort the robot's list.
         """
-        # Fill this out
-        pass
+        # Idea behind this algorithm for the robot is that the robot needs to pickup the first item in the list and then start moving right.
+        # as the robot goes to the right it should be comparing its held item to the items it passes by
+        # whenever it finds an item that is smaller than the one it is holding it will swap them out (this means when it gets to the end of the right side it will be holding in its hand
+        # the lowest number)
+        # once the robot reaches the end it should make its way back to the beginning of the list by going to the left
+        # while the robot is moving to the left - it should be checking to see if it gets 'None' when comparing items 
+        # when the robot does finally get the 'None' back from comparing that means it has gone far enough to the left and can swap the item in its hand for nothing
+        # keep repeating this until the robot can go over the entire list without swapping anything(i can use the light on and off feature to know if the robot has swapped something or not)
+
+        self.set_light_on()
+
+        while self.light_is_on():
+            self.set_light_off()
+            self.swap_item()
+            # print(self._list)
+
+            while self.can_move_right():
+                self.move_right()
+
+                if self.compare_item() == 1:
+                    self.swap_item()
+                    self.set_light_on()
+
+            while self.can_move_left():
+                # this first if statement is needed so that at the end when 'None' has reached the end of the list the robot can swap it out before continuing on
+                # otherwise None will stay in the list
+                if self.compare_item() == None:
+                    self.swap_item()
+                    break
+
+                self.move_left()
+
+                if self.compare_item() == None:
+                    self.swap_item()
+                    break
+            
+            self.move_right()
 
 
 if __name__ == "__main__":
     # Test our your implementation from the command line
     # with `python robot_sort.py`
 
-    l = [15, 41, 58, 49, 26, 4, 28, 8, 61, 60, 65, 21, 78, 14, 35, 90, 54, 5, 0, 87, 82, 96, 43, 92, 62, 97, 69, 94, 99, 93, 76, 47, 2, 88, 51, 40, 95, 6, 23, 81, 30, 19, 25, 91, 18, 68, 71, 9, 66, 1, 45, 33, 3, 72, 16, 85, 27, 59, 64, 39, 32, 24, 38, 84, 44, 80, 11, 73, 42, 20, 10, 29, 22, 98, 17, 48, 52, 67, 53, 74, 77, 37, 63, 31, 7, 75, 36, 89, 70, 34, 79, 83, 13, 57, 86, 12, 56, 50, 55, 46]
+    # l = [15, 41, 58, 49, 26, 4, 28, 8, 61, 60, 65, 21, 78, 14, 35, 90, 54, 5, 0, 87, 82, 96, 43, 92, 62, 97, 69, 94, 99, 93, 76, 47, 2, 88, 51, 40, 95, 6, 23, 81, 30, 19, 25, 91, 18, 68, 71, 9, 66, 1, 45, 33, 3, 72, 16, 85, 27, 59, 64, 39, 32, 24, 38, 84, 44, 80, 11, 73, 42, 20, 10, 29, 22, 98, 17, 48, 52, 67, 53, 74, 77, 37, 63, 31, 7, 75, 36, 89, 70, 34, 79, 83, 13, 57, 86, 12, 56, 50, 55, 46]
+    l = [15, 41, 58, 49, 26, 4, 28, 8, 61, 55, 46]
 
     robot = SortingRobot(l)
 
